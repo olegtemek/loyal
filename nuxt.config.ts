@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   ssr: false,
 
-
+  css: ['@/assets/scss/app.scss'],
 
   modules: [
     // ...
@@ -15,6 +15,7 @@ export default defineNuxtConfig({
         ],
       },
     ],
+    'nuxt-icons',
   ],
 
   nitro: {
@@ -24,6 +25,10 @@ export default defineNuxtConfig({
         changeOrigin: true
       }
     },
+  },
+
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
   },
 
 

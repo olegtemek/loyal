@@ -3,9 +3,7 @@
     <div
       class="alert"
       v-if="alertStore.text"
-      :class="{
-        error: alertStore.error,
-      }"
+      :class="alertStore.error ? 'error' : ''"
     >
       {{ alertStore.text }}
     </div>

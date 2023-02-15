@@ -1,16 +1,18 @@
 import { useAuthStore } from '@/store/auth.js'
 
 
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware(async (to, from) => {
   if (useCookie('token').value) {
-    useAuthStore().check(to.name)
+
+    await useAuthStore().check(to.name)
+
   } else {
-    if (to.name != 'login' && to.name != 'registration') {
+    if (to.name != 'login' && to.name != 'registration' && to.name != 'reset' && to.name != 'reset-code') {
       return navigateTo('/login')
     } else {
-      useAuthStore().check(to.name)
+      await useAuthStore().check(to.name)
     }
   }
 
 
-})
+}) 

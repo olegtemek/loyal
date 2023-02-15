@@ -10,10 +10,9 @@ export const useAlertStore = defineStore('alert', {
 
 
   actions: {
-    async init(text, error) {
-      console.log(text);
+    async init(text, error = false) {
       clearTimeout(this.timer)
-      this.text = text;
+      this.text = text ? text : 'Ошибка сервера попробуйте снова';
       this.error = error
       this.timer = setTimeout(() => {
         this.text = null

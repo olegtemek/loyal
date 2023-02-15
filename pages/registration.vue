@@ -1,32 +1,38 @@
 <template>
-  <div class="auth">
-    <div class="container">
-      <div class="auth__wrapper">
-        <div class="auth__item">
-          <h2>Ваш ФИО</h2>
-          <input type="text" v-model="user.name" placeholder="ФИО" />
-        </div>
-        <div class="auth__item">
-          <h2>Ваш номер</h2>
-          <input
-            type="text"
-            v-model="user.number"
-            v-maska
-            data-maska="+7 ###-###-##-##"
-            placeholder="Номер телефона"
-          />
-        </div>
-        <div class="auth__item">
-          <h2>Ваш email</h2>
-          <input type="text" v-model="user.email" placeholder="Email" />
-        </div>
-        <div class="auth__item">
-          <h2>Ваш пароль</h2>
-          <input type="password" v-model="user.password" placeholder="Пароль" />
-        </div>
-        <div class="auth__item">
-          <button @click="register">Регистрация</button>
-        </div>
+  <div class="auth reg">
+    <div class="auth__wrapper">
+      <UiTopAuth />
+      <div class="auth__item">
+        <h2>ФИО</h2>
+        <input type="text" v-model="user.name" />
+        <span>Чтобы мы всегда помнили</span>
+      </div>
+      <div class="auth__item">
+        <h2>Ваш номер</h2>
+        <input
+          type="text"
+          v-model="user.number"
+          v-maska
+          data-maska="+7 ###-###-##-##"
+        />
+        <span>Чтобы мы знали, что Вы наш частый клиент</span>
+      </div>
+      <div class="auth__item">
+        <h2>Ваш email</h2>
+        <input type="text" v-model="user.email" />
+        <span>Чтобы Вы знали, что у нас есть акция для Вас</span>
+      </div>
+      <div class="auth__item">
+        <h2>Ваш пароль</h2>
+        <input type="password" v-model="user.password" />
+        <span>Чтобы Ваши бонусы были только Ваши</span>
+      </div>
+      <div class="auth__item">
+        <UiMyButton :title="'Регистрация'" @onClick="register" />
+        <span
+          >Нажимая далее вы соглашаетесь на обработку ваших
+          <a href="#">персональных данных</a>
+        </span>
       </div>
     </div>
   </div>

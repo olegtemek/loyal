@@ -32,10 +32,10 @@ export const useAuthStore = defineStore('auth', {
     async login(user) {
 
       if (!user.number) {
-        return useAlertStore().init('Поле номер обязательно для заполнения', false)
+        return useAlertStore().init('Поле номер обязательно для заполнения', true)
       }
       if (!user.password) {
-        return useAlertStore().init('Поле пароль обязательно для заполнения', false)
+        return useAlertStore().init('Поле пароль обязательно для заполнения', true)
       }
 
       try {
@@ -53,47 +53,47 @@ export const useAuthStore = defineStore('auth', {
           return navigateTo('/confirm')
         }
       } catch (e) {
-        return useAlertStore().init(e.data.message, false)
+        return useAlertStore().init(e.data.message, true)
       }
 
     },
 
 
     async check(pageName) {
-
       try {
         await $fetch('/api/check-token', { method: "POST" }).then(data => {
 
           this.user = data.user
           if (pageName == 'login' || pageName == 'registration') {
-            return navigateTo('/')
+            location.replace('/')
           }
           if (!data.user.status) {
-            if (pageName != 'confirm') {
-              return navigateTo('/confirm')
+            if (pageName != 'confirm' && pageName != 'reset-code') {
+              location.replace('/confirm')
+            }
+          } else {
+            if (pageName == 'confirm' && pageName != 'reset-code') {
+              location.replace('/')
+            } else if (pageName == 'reset-code') {
+              return
             }
             return
-          } else {
-
-            if (pageName == 'confirm') {
-              return navigateTo('/')
-            }
           }
         }).catch(e => {
-
-          if (pageName == 'login' || pageName == 'registration') {
+          if (pageName == 'login' || pageName == 'registration' || pageName == 'reset' || to.name == 'reset-code') {
             return
           }
-          useCookie('token').value = ''
-          return navigateTo('/')
+          useCookie('token').value = null
+          location.replace('/')
         })
 
       } catch (e) {
-        if (pageName == 'login' || pageName == 'registration') {
+        if (pageName == 'login' || pageName == 'registration' || pageName == 'reset' || to.name == 'reset-code') {
           return
         }
+
         useCookie('token').value = null
-        return navigateTo('/login')
+        location.replace('/login')
       }
     },
     async registration(data) {
@@ -102,7 +102,7 @@ export const useAuthStore = defineStore('auth', {
 
 
         if (result.message) {
-          return useAlertStore().init(result.message, false)
+          return useAlertStore().init(result.message, true)
         }
 
 
@@ -121,14 +121,14 @@ export const useAuthStore = defineStore('auth', {
         return navigateTo('/confirm')
 
       } catch (e) {
-        useAlertStore().init(e.data.message, false)
+        useAlertStore().init(e.data.message)
       }
     },
 
 
     async confirmCode(code) {
       if (!code) {
-        return useAlertStore().init('Поле код не должно быть пустым', false)
+        return useAlertStore().init('Поле код не должно быть пустым', true)
       }
 
       try {
@@ -143,7 +143,7 @@ export const useAuthStore = defineStore('auth', {
         navigateTo('/')
 
       } catch (e) {
-        useAlertStore().init(e.data.message, false)
+        useAlertStore().init(e.data.message, true)
 
       }
     },
@@ -157,10 +157,48 @@ export const useAuthStore = defineStore('auth', {
           }
         })
 
-        useAlertStore().init('Письмо успешно отправлено, проверьте вашу почту', true)
+        useAlertStore().init('Письмо успешно отправлено, проверьте вашу почту')
 
       } catch (e) {
-        useAlertStore().init(e.data.message, false)
+        useAlertStore().init(e.data.message, true)
+      }
+    },
+
+
+    async reset(number) {
+      if (!number) {
+        return useAlertStore().init('Поле номер не должно быть пустым', true)
+      }
+
+      try {
+        let res = await $fetch('/api/reset', {
+          method: "POST",
+          body: {
+            number: number
+          }
+        })
+
+        useAlertStore().init('Код подтверждения отправлен Вам на почту!')
+        setTimeout(() => {
+          return navigateTo('/login')
+        }, 2000);
+
+      } catch (e) {
+        useAlertStore().init(e.data.message, true)
+      }
+
+    },
+    async checkCode(code) {
+      try {
+        let res = await $fetch('/api/reset-code', {
+          method: "POST",
+          body: {
+            code: code
+          }
+        })
+      } catch (e) {
+        useAlertStore().init(e.data.message, true)
+        return navigateTo('/login')
       }
     }
   },

@@ -1,9 +1,29 @@
 <template>
-  <div>
-    <input type="text" placeholder="code" v-model="code" />
-    <button @click="check">send</button>
+  <div class="auth">
+    <div class="auth__wrapper container">
+      <div class="auth__top">
+        <router-link class="auth__top-logo" to="/">
+          <img src="@/assets/img/logo.png" alt="" />
+        </router-link>
+      </div>
+      <div class="auth__item">
+        <h2>Код подтверждения</h2>
+        <input type="text" v-model="code" @keyup.enter="check" />
+        <span>Мы отправили код Вам на почту</span>
+      </div>
+      <div class="auth__item">
+        <UiMyButton :title="'Проверить'" @onClick="check" />
 
-    <button @click="retry">retry</button>
+        <span>
+          <UiMyButton
+            :title="'Не пришло письмо?'"
+            :isMain="false"
+            class="retry"
+            @onClick="retry"
+          />
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
