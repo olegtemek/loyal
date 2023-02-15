@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import sendMail from '../utils/sendMailCode.js'
+import sendResetMail from '../utils/sendMailReset.js'
 dotenv.config()
 
 
@@ -66,12 +67,15 @@ export const registration = async (req, res) => {
       sendClient(res)
     })
 
+    const token = await createToken(data.number);
+
     let user = await prisma.user.create({
       data: {
         email: data.email,
         name: data.name,
         number: data.number,
         password: saltPassword,
+        accessHash: token,
         info: {
           create: {
             where: 1,
@@ -96,14 +100,11 @@ export const registration = async (req, res) => {
       })
       sendMail(user.email, code.code)
 
-
-      let token = await createToken(user.number);
       res.cookie('token', token)
 
       delete user.password
       sendClient(res, 200, { token: token, user: user })
     } else {
-
       sendClient(res, 200, { user: user })
     }
 
@@ -132,13 +133,14 @@ export const registrationAdmin = async (req, res) => {
     }).catch(e => {
       sendClient(res)
     })
-
+    const token = await createToken(data.number);
     let user = await prisma.user.create({
       data: {
         email: data.email,
         name: data.name,
         number: data.number,
         password: saltPassword,
+        accessHash: token,
         role: 1,
         status: true,
         info: {
@@ -239,6 +241,41 @@ export const retry = async (req, res) => {
     sendClient(res, 200, { message: 'Сообщение с кодом успешно отправлено' })
 
 
+  } catch (e) {
+    sendClient(res)
+  }
+}
+
+export const reset = async (req, res) => {
+  try {
+    let { number } = req.body
+    let user = await prisma.user.findFirst({ where: { number: number } })
+    if (!user) {
+      return sendClient(res, 404, { message: 'Пользователь не найден' })
+    }
+
+    sendResetMail(user.email, user.accessHash)
+
+    sendClient(res, 200, { message: "Письмо отправлено Вам на почту" })
+
+  } catch (e) {
+    sendClient(res)
+  }
+}
+
+export const resetCode = async (req, res) => {
+  try {
+    let { code } = req.body
+
+    let user = await prisma.user.findFirst({ where: { accessHash: code } })
+    if (!user) {
+      return sendClient(res, 404, { message: 'Ошибка, неправильный код, попробуйте снова' })
+    }
+
+    const token = await createToken(user.number);
+    res.cookie('token', token)
+
+    sendClient(res, 200, { message: 'Правильный код, можно менять)' })
   } catch (e) {
     sendClient(res)
   }

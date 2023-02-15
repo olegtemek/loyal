@@ -7,6 +7,7 @@ CREATE TABLE `User` (
     `password` VARCHAR(191) NOT NULL,
     `role` INTEGER NOT NULL DEFAULT 0,
     `status` BOOLEAN NOT NULL DEFAULT false,
+    `accessHash` LONGTEXT NOT NULL,
 
     UNIQUE INDEX `User_number_key`(`number`),
     UNIQUE INDEX `User_email_key`(`email`),
