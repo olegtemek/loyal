@@ -101,6 +101,22 @@
         &.bold {
           font-weight: $fw-bold;
         }
+
+        button {
+          width: 100%;
+          background-color: $blue;
+          font-weight: $fw-bold;
+          padding: 8px 0;
+          line-height: 24px;
+          color: $white;
+          border-radius: $br;
+        }
+
+        &:last-child {
+          button {
+            background-color: $red;
+          }
+        }
       }
     }
   }

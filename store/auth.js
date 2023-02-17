@@ -60,6 +60,7 @@ export const useAuthStore = defineStore('auth', {
 
 
     async check(pageName) {
+
       try {
         await $fetch('/api/check-token', { method: "POST" }).then(data => {
 
@@ -80,7 +81,7 @@ export const useAuthStore = defineStore('auth', {
             return
           }
         }).catch(e => {
-          if (pageName == 'login' || pageName == 'registration' || pageName == 'reset' || to.name == 'reset-code') {
+          if (pageName == 'login' || pageName == 'registration' || pageName == 'reset' || pageName == 'reset-code') {
             return
           }
           useCookie('token').value = null
@@ -88,9 +89,10 @@ export const useAuthStore = defineStore('auth', {
         })
 
       } catch (e) {
-        if (pageName == 'login' || pageName == 'registration' || pageName == 'reset' || to.name == 'reset-code') {
+        if (pageName == 'login' || pageName == 'registration' || pageName == 'reset' || pageName == 'reset-code') {
           return
         }
+
 
         useCookie('token').value = null
         location.replace('/login')

@@ -3,6 +3,8 @@
     <div class="container">
       <NuxtPage />
     </div>
+
+    <UiMyAlert />
   </div>
 </template>
 

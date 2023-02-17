@@ -7,7 +7,7 @@
       <div>E-mail</div>
       <div>
         Потрачено <br />
-        в общем Тг.
+        в общем тг.
       </div>
       <div>
         Доступный <br />
@@ -25,16 +25,20 @@
     </div>
 
     <div class="admin__table-list">
-      <div class="admin__table-item" v-for="index of 20" :key="index">
-        <div>Полежайкин Александр</div>
-        <div>+7-771-208-51-50</div>
-        <div>Стоматология</div>
-        <div>somename @gmail.com</div>
-        <div class="bold">575 000 тг</div>
-        <div>Кэшбек: 20%</div>
-        <div>25 000 бонусов</div>
-        <div><button>add</button></div>
-        <div><button>remove</button></div>
+      <div
+        class="admin__table-item"
+        v-for="user of tableStore.getUsers"
+        :key="user.id"
+      >
+        <div>{{ user.name }}</div>
+        <div>{{ user.number }}</div>
+        <div>{{ user.info[0].where ? "Стоматология" : "Crystal Auto" }}</div>
+        <div>{{ user.email }}</div>
+        <div class="bold">{{ user.info[0].lost }} тг</div>
+        <div>Кэшбек: {{ user.info[0].procent }}%</div>
+        <div>{{ user.info[0].bonuses }} бонусов</div>
+        <div><button @click="add(user, 1)">Добавить</button></div>
+        <div><button @click="add(user)">Снять</button></div>
       </div>
     </div>
   </div>
@@ -43,4 +47,14 @@
 
 
 <script setup>
+import { useTableStore } from "@/store/table.js";
+const tableStore = useTableStore();
+await tableStore.fetchAll();
+
+const add = (user, type = 0) => {
+  tableStore.changeModal({
+    user: user,
+    type: type,
+  });
+};
 </script>
