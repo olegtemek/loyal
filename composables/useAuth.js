@@ -18,8 +18,11 @@ const useAuth = () => {
     authStore.checkCode(data)
   }
 
+  const createUserAdmin = (data) => {
+    authStore.createUserAdmin(data)
+  }
   return {
-    registration, login, reset, checkCode
+    registration, login, reset, checkCode, createUserAdmin
   }
 }
 

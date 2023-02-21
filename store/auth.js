@@ -1,4 +1,5 @@
 import { useAlertStore } from '@/store/alert.js'
+import { useTableStore } from '@/store/table.js'
 
 
 function validation(data) {
@@ -201,6 +202,42 @@ export const useAuthStore = defineStore('auth', {
       } catch (e) {
         useAlertStore().init(e.data.message, true)
         return navigateTo('/login')
+      }
+    },
+
+    async createUserAdmin(data) {
+      try {
+        let result = validation(data);
+
+
+        if (result.message) {
+          return useAlertStore().init(result.message, true)
+        }
+
+
+
+        let res = await $fetch('/api/registration-admin', {
+          method: 'POST',
+          body: {
+            email: data.email,
+            password: data.password,
+            name: data.name,
+            number: data.number,
+            where: useRoute().query.from ? useRoute().query.from : 1
+          }
+        })
+
+        useTableStore().changeModal({
+          success: res.message,
+          type: 2,
+          user: res.user
+        })
+
+        useTableStore().fetchAll();
+
+
+      } catch (e) {
+        useAlertStore().init(e.data.message, true)
       }
     }
   },

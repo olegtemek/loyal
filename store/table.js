@@ -10,6 +10,11 @@ export const useTableStore = defineStore('table', {
         user: null,
         type: null,
         success: null
+      },
+      filters: {
+        name: null,
+        number: null,
+        where: 1
       }
     }
   },
@@ -44,14 +49,29 @@ export const useTableStore = defineStore('table', {
       }
 
     },
-    async pay(data) {
-      console.log(data);
+
+    async filterAt(data) {
+      this.filters.name = data.name;
+      this.filters.number = data.number;
+      this.filters.where = data.where;
     }
   },
 
   getters: {
     getUsers(state) {
-      return state.users
+      let filterUsers = state.users
+
+
+      if (state.filters.name) {
+        filterUsers = filterUsers.filter((item) => item.name.toLowerCase().indexOf(state.filters.name.toLowerCase()) > -1)
+      }
+      filterUsers = filterUsers.filter((item) => item.info[0].where == state.filters.where)
+
+      if (state.filters.number) {
+        filterUsers = filterUsers.filter((item) => item.number.indexOf(state.filters.number) > -1)
+      }
+
+      return filterUsers
     },
     getModal(state) {
       return state.modal

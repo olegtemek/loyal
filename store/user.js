@@ -1,4 +1,5 @@
 import { useAlertStore } from '@/store/alert.js'
+import { useTableStore } from '@/store/table.js'
 
 export const useUserStore = defineStore('user', {
 
@@ -18,6 +19,12 @@ export const useUserStore = defineStore('user', {
         })
 
         await useAlertStore().init(res.message)
+
+        if (useRoute().name == 'admin') {
+          useTableStore().fetchAll()
+
+          console.log(res, data);
+        }
         if (useRoute().name == 'reset-code') {
           return navigateTo('/login')
         }

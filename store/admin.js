@@ -20,8 +20,6 @@ export const useAdminStore = defineStore('admin', {
       } catch (e) {
         useAlertStore().init(e.data.message, true)
       }
-
-
     }
   },
 

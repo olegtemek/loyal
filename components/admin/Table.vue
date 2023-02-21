@@ -1,6 +1,7 @@
 <template>
   <div class="admin__table">
     <div class="admin__table-top">
+      <div></div>
       <div>ФИО</div>
       <div>Телефон</div>
       <div>От куда</div>
@@ -30,6 +31,14 @@
         v-for="user of tableStore.getUsers"
         :key="user.id"
       >
+        <div>
+          <button @click="edit(user)" v-if="getInfoUser().role == 2">
+            <nuxt-icon name="general/edit"></nuxt-icon>
+          </button>
+          <button @click="view(user)">
+            <nuxt-icon name="general/view"></nuxt-icon>
+          </button>
+        </div>
         <div>{{ user.name }}</div>
         <div>{{ user.number }}</div>
         <div>{{ user.info[0].where ? "Стоматология" : "Crystal Auto" }}</div>
@@ -47,6 +56,7 @@
 
 
 <script setup>
+const { getInfoUser } = useUser();
 import { useTableStore } from "@/store/table.js";
 const tableStore = useTableStore();
 await tableStore.fetchAll();
@@ -55,6 +65,19 @@ const add = (user, type = 0) => {
   tableStore.changeModal({
     user: user,
     type: type,
+  });
+};
+
+const edit = (user) => {
+  tableStore.changeModal({
+    user: user,
+    type: 4,
+  });
+};
+const view = (user) => {
+  tableStore.changeModal({
+    user: user,
+    type: 5,
   });
 };
 </script>

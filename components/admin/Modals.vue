@@ -11,7 +11,7 @@
       </div>
       <div class="modal__item row">
         <div>
-          <h2>Максимальный % списания</h2>
+          <h2>% списания</h2>
           <input type="text" v-model="tmpUser.procent" readonly />
         </div>
         <div>
@@ -59,7 +59,7 @@
     <div class="modal__wrapper" v-else>
       <span @click="closeModal">&#9587;</span>
       <h2>Операция прошла успешно</h2>
-      <p>{{ props.success }}</p>
+      <p v-html="props.success"></p>
       <div class="modal__btns">
         <button @click="closeModal" class="blue">На главную</button>
       </div>
@@ -73,7 +73,10 @@
 import { useAlertStore } from "@/store/alert.js";
 const { userTransaction } = useAdmin();
 const props = defineProps({
-  user: Object,
+  user: {
+    type: Object,
+    default: null,
+  },
   type: Number,
   active: false,
   success: String,

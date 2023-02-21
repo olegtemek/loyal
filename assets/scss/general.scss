@@ -50,6 +50,7 @@ body {
   color: $white;
   font-weight: $fw-bold;
   max-width: 260px;
+  z-index: 9999;
 
   @media (max-width:375px) {
     right: 50%;
