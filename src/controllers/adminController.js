@@ -1,10 +1,13 @@
 import prisma from '../../prisma/client.js'
 import sendClient from '../utils/sendClient.js'
+import fs from 'fs'
+import * as url from 'url';
 
+import { parse } from 'json2csv';
 
 export const index = async (req, res) => {
   try {
-    let users = await prisma.user.findMany({ where: { role: 0, status: true }, include: { info: true } })
+    let users = await prisma.user.findMany({ where: { NOT: { role: 2 }, status: true }, include: { info: true } })
 
     sendClient(res, 200, { message: 'ok', users: users })
   } catch (e) {
@@ -70,9 +73,9 @@ export const transaction = async (req, res) => {
         }
       }).then(newUser => {
         if (data.minus) {
-          sendClient(res, 200, { message: `Списано ${data.minus} бонусов с аккаунта ${user.name}. Остаток ${newUser.info[0].bonuses} бонусов` })
+          sendClient(res, 200, { message: `Списано ${data.minus} бонусов с аккаунта ${user.name}.<br> Остаток ${newUser.info[0].bonuses} бонусов` })
         } else {
-          sendClient(res, 200, { message: `Зачислено ${tmpUser.bonuses} бонусов на аккаунт ${user.name}. На счету ${newUser.info[0].bonuses} бонусов` })
+          sendClient(res, 200, { message: `Зачислено ${tmpUser.bonuses} бонусов на аккаунт ${user.name}.<br> На счету ${newUser.info[0].bonuses} бонусов` })
         }
       })
 
@@ -89,8 +92,45 @@ export const transaction = async (req, res) => {
 
 }
 
-export const store = async (req, res) => {
+export const exportUsers = async (req, res) => {
+  try {
+    const users = await prisma.user.findMany({ where: { NOT: { role: 2 }, status: true }, include: { info: true } })
 
+
+
+
+
+  } catch (e) {
+    sendClient(res)
+  }
+
+  // let jsonArray = [];
+  // users.forEach(function (instance, indexx, record) {
+  //   var tempArry = {
+  //     'ColoumnName1': record[indexx].columnNameVlaue,
+  //     'ColoumnName2': record[indexx].columnNameVlaue,
+  //     'ColoumnName3': record[indexx].columnNameVlaue,
+  //     'ColoumnName4': record[indexx].columnNameVlaue
+  //   }
+  //   jsonArray.push(tempArry);
+  // });
+  // //this code is for sorting  xls with required value
+  // jsonArray.sort(function (a, b) {
+  //   return parseFloat(b.ColoumnName4) - parseFloat(a.ColoumnName4);
+  // });
+  // var xls = exporter(jsonArray);
+
+  // fs.writeFileSync(`${url.fileURLToPath(new URL('.', import.meta.url)) + '/excelsender.xlsx'}`, xls, 'binary');
+
+  // res.sendFile('excelsender.xlsx', { root: url.fileURLToPath(new URL('.', import.meta.url)) }, function (err) {
+  //   if (err) {
+  //     console.log(err);
+  //     // next(err);
+  //   } else {
+  //     console.log('Sent:', fileName);
+  //   }
+  // });
+  // fs.unlink('../../excelsender.xlsx', () => { });
 }
 
 export const edit = async (req, res) => {

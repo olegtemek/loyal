@@ -19,12 +19,42 @@ export const update = async (req, res) => {
     } else {
       delete user.password
     }
-    await prisma.user.update({
-      where: {
-        email: req.user.email
-      },
-      data: user
-    })
+    if (user.more) {
+      const findUser = await prisma.user.findFirst({
+        where: { email: user.email }, include: { info: true }
+      })
+
+      await prisma.user.update({
+        where: {
+          id: findUser.id,
+        },
+
+        data: {
+          role: user.role,
+          info: {
+            update: {
+              where: {
+                id: findUser.info[0].id
+              },
+              data: {
+                bonuses: parseInt(user.more.bonuses),
+                lost: parseInt(user.more.lost),
+                procent: parseInt(user.more.procent)
+              }
+            }
+          }
+        }
+      })
+
+    }
+    else {
+      await prisma.user.update({
+        where: {
+          email: req.user.email
+        },
+        data: user
+      })
+    }
 
     sendClient(res, 200, { message: 'Данные аккаунта успешно сохранены' })
   } catch (e) {

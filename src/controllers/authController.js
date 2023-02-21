@@ -128,6 +128,10 @@ export const registrationAdmin = async (req, res) => {
     let data = req.body
     let saltPassword = null
 
+    if (typeof data.role == 'undefined') {
+      data.role = 0
+    }
+
     await bcrypt.hash(data.password, parseInt(process.env.SALT)).then(result => {
       saltPassword = result
     }).catch(e => {
@@ -141,7 +145,7 @@ export const registrationAdmin = async (req, res) => {
         number: data.number,
         password: saltPassword,
         accessHash: token,
-        role: 1,
+        role: data.role,
         status: true,
         info: {
           create: {
@@ -152,8 +156,9 @@ export const registrationAdmin = async (req, res) => {
           }
         }
       },
+      include: { info: true }
     })
-    sendClient(res, 200, { message: "Пользователь успешно создан" })
+    sendClient(res, 200, { message: `Пользователь успешно создан <br> Номер телефона: ${user.number}<br>Пароль: ${data.password}`, user: user })
 
   } catch (e) {
     if (e.code === 'P2002' && e.meta.target == 'User_number_key') {

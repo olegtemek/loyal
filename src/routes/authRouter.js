@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.post('/registration', registration)
 router.post('/registration-admin', isAuth, isAdmin, registrationAdmin)
-router.post('/registration-user', isAuth, isAdmin, registrationAdmin)
+// router.post('/registration-user', isAuth, isAdmin, registrationAdmin)
 router.post('/login', login)
 router.post('/check-token', isAuth, async (req, res) => {
   res.json({ user: req.user })
