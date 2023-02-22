@@ -7,7 +7,11 @@
 
       <div class="modal__item">
         <h2>Сумма оплаты</h2>
-        <input type="text" v-model="tmpUser.sum" @keyup="resultBonuses" />
+        <input
+          type="number"
+          v-model.number="tmpUser.sum"
+          @keyup="resultBonuses"
+        />
       </div>
       <div class="modal__item row">
         <div>
@@ -101,7 +105,7 @@ const closeModal = () => {
 };
 
 const resultBonuses = () => {
-  if (tmpUser.value.sum > 0) {
+  if (tmpUser.value.sum > 0 && tmpUser.value.sum != "" && tmpUser.value.sum) {
     tmpUser.value.can = Math.floor(
       (tmpUser.value.sum * tmpUser.value.procent) / 100
     );
@@ -116,7 +120,7 @@ const resultBonuses = () => {
       tmpUser.value.error = false;
     }
   } else {
-    tmpUser.value.error = null;
+    tmpUser.value.error = true;
     tmpUser.value.sum = null;
   }
 };
