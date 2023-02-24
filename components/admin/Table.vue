@@ -18,10 +18,7 @@
         Количество <br />
         бонусов
       </div>
-      <div>
-        Добавить к <br />
-        общей стоимости
-      </div>
+      <div>Добавить траты</div>
       <div>Снять бонусы</div>
     </div>
 
@@ -39,7 +36,7 @@
             <nuxt-icon name="general/view"></nuxt-icon>
           </button>
         </div>
-        <div>{{ user.name }}</div>
+        <div>{{ user.name }} {{ user.name }} {{ user.name }}</div>
         <div>{{ user.number }}</div>
         <div>{{ user.info[0].where ? "Стоматология" : "Crystal Auto" }}</div>
         <div>{{ user.email }}</div>

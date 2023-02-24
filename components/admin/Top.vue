@@ -6,8 +6,8 @@
 
     <div class="admin__top-right">
       <div class="admin__top-right-senders" v-if="getInfoUser().role == 2">
-        <button>Загрузка excel</button>
-        <button class="green">SMS рассылка</button>
+        <!-- <button>Загрузка excel</button>
+        <button class="green">SMS рассылка</button> -->
         <button class="red" @click="addUser">Добавить пользователя</button>
       </div>
       <div class="admin__top-right-logout">

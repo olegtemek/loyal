@@ -31,10 +31,26 @@
     max-height: 100%;
     overflow-y: auto;
     box-sizing: border-box;
+    animation: anim 0.4s;
+
+    @keyframes anim {
+      0% {
+        transform: scale(0);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
 
     @media (max-width:640px) {
       max-width: 90%;
     }
+
+    @media (max-width:460px) {
+      padding: 20px 10px;
+    }
+
 
 
     >p {
@@ -67,6 +83,10 @@
     align-items: flex-start;
     padding-top: 20px;
     position: relative;
+
+    @media (max-width:460px) {
+      padding-top: 10px;
+    }
 
     .nuxt-icon {
       position: absolute;
@@ -120,6 +140,8 @@
         >div {
           margin-bottom: 10px;
 
+
+
           &:last-child {
             margin-bottom: 0;
           }
@@ -151,6 +173,10 @@
       @media (max-width:640px) {
         font-size: 16px;
       }
+
+      @media (max-width:460px) {
+        font-size: 12px;
+      }
     }
 
     input {
@@ -175,6 +201,10 @@
     width: 100%;
     margin-top: 40px;
 
+    @media (max-width:460px) {
+      margin-top: 20px;
+    }
+
     button {
       width: 100%;
       max-width: 75%;
@@ -190,6 +220,11 @@
 
       @media (max-width:640px) {
         padding: 12px 0;
+      }
+
+      @media (max-width:460px) {
+        font-size: 12px;
+        margin-left: 4px;
       }
 
       &:first-child {
