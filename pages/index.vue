@@ -24,7 +24,7 @@
         <div class="profile__wrapper-info-total cache">
           <p>
             Ваш кешбек составляет:
-            <span>{{ getInfoUser().info[0].procent }} %</span>
+            <span>{{ getInfoUser().procent }} %</span>
           </p>
         </div>
         <p>
@@ -44,14 +44,17 @@
         <p v-if="getInfoUser().info[0].where">
           Наш кешбек так же распространяется на магазин с автозапчастями
         </p>
-        <p v-else>loh</p>
+        <p v-else>
+          Наш кешбек так же распространяется на стоматологию CrystalDent
+        </p>
+
         <a href="#" class="btn"
           ><nuxt-icon name="general/gears" filled></nuxt-icon>Автозапчасти</a
         >
       </div>
 
       <div class="profile__wrapper-social">
-        <a href="#"><nuxt-icon name="general/instgram"></nuxt-icon></a>
+        <a href="#"><nuxt-icon name="general/instagram"></nuxt-icon></a>
         <a href="#"><nuxt-icon name="general/whatsapp"></nuxt-icon></a>
         <a href="#"><nuxt-icon name="general/telegram"></nuxt-icon></a>
       </div>
@@ -63,4 +66,7 @@
 
 <script setup>
 const { hello, getInfoUser } = useUser();
+
+import { useCashbackStore } from "@/store/cashback.js";
+await useCashbackStore().fetchCashback();
 </script>

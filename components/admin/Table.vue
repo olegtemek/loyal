@@ -36,13 +36,19 @@
             <nuxt-icon name="general/view"></nuxt-icon>
           </button>
         </div>
-        <div>{{ user.name }} {{ user.name }} {{ user.name }}</div>
-        <div>{{ user.number }}</div>
+        <div>
+          <p>{{ user.name }}</p>
+        </div>
+        <div>
+          <p>{{ user.number }}</p>
+        </div>
         <div>{{ user.info[0].where ? "Стоматология" : "Crystal Auto" }}</div>
-        <div>{{ user.email }}</div>
+        <div>
+          <p>{{ user.email }}</p>
+        </div>
         <div class="bold">{{ user.info[0].lost }} тг</div>
-        <div>Кэшбек: {{ user.info[0].procent }}%</div>
-        <div>{{ user.info[0].bonuses }} бонусов</div>
+        <div>Кэшбек: {{ user.procent }}%</div>
+        <div>{{ user.info[0].bonuses }} б.</div>
         <div><button @click="add(user, 1)">Добавить</button></div>
         <div><button @click="add(user)">Снять</button></div>
       </div>
@@ -55,6 +61,8 @@
 <script setup>
 const { getInfoUser } = useUser();
 import { useTableStore } from "@/store/table.js";
+import { useCashbackStore } from "@/store/cashback.js";
+await useCashbackStore().fetchCashback();
 const tableStore = useTableStore();
 await tableStore.fetchAll();
 

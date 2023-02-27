@@ -28,6 +28,12 @@
         useTableStore().getModal.active && useTableStore().getModal.type == 6
       "
     />
+    <AdminModalCash
+      v-if="
+        useTableStore().getModal.active && useTableStore().getModal.type == 8
+      "
+      :cashback="useCashbackStore().getCashback"
+    />
   </div>
 </template>
 
@@ -38,4 +44,8 @@ definePageMeta({
   layout: "admin",
 });
 import { useTableStore } from "@/store/table.js";
+
+import { useCashbackStore } from "@/store/cashback.js";
+
+await useCashbackStore().fetchCashback();
 </script>

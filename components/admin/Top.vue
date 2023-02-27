@@ -6,8 +6,7 @@
 
     <div class="admin__top-right">
       <div class="admin__top-right-senders" v-if="getInfoUser().role == 2">
-        <!-- <button>Загрузка excel</button>
-        <button class="green">SMS рассылка</button> -->
+        <button class="green" @click="changeProcent">Кешбек</button>
         <button class="red" @click="addUser">Добавить пользователя</button>
       </div>
       <div class="admin__top-right-logout">
@@ -33,6 +32,12 @@ import { useTableStore } from "@/store/table.js";
 const addUser = () => {
   useTableStore().changeModal({
     type: 6,
+  });
+};
+
+const changeProcent = () => {
+  useTableStore().changeModal({
+    type: 8,
   });
 };
 </script>

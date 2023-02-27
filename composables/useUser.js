@@ -2,6 +2,8 @@ import { useAuthStore } from "@/store/auth.js";
 const authStore = useAuthStore();
 import { useUserStore } from "@/store/user.js";
 const userStore = useUserStore();
+import { useCashbackStore } from "@/store/cashback.js";
+const cashbackStore = useCashbackStore();
 
 const useUser = () => {
 
@@ -12,6 +14,7 @@ const useUser = () => {
   const getInfoUser = () => {
     return authStore.getUser
   }
+
 
   const hello = () => {
     let h = (new Date()).getHours();
@@ -24,8 +27,23 @@ const useUser = () => {
     return text
   }
 
+  const getProcent = async (user) => {
+    let procents = cashbackStore.getCashback;
+
+    let procent = procents[0].cashback
+
+    procents.forEach(proc => {
+      if (proc.counter <= user.info[0].lost) {
+        return procent = proc.cashback
+      }
+    });
+
+
+    return procent
+  }
+
   return {
-    userUpdate, hello, getInfoUser
+    userUpdate, hello, getInfoUser, getProcent
   }
 }
 

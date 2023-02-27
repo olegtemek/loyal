@@ -35,11 +35,7 @@
       </div>
       <div class="modal__item">
         <h2>Доступный кэшбек</h2>
-        <input
-          type="text"
-          :value="props.user.info[0].procent + ' %'"
-          readonly
-        />
+        <input type="text" :value="props.user.procent + ' %'" readonly />
       </div>
 
       <div class="modal__btns">

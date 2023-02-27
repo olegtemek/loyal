@@ -1,4 +1,5 @@
 import { useAlertStore } from '@/store/alert.js'
+import { useCashbackStore } from '@/store/cashback.js'
 
 export const useTableStore = defineStore('table', {
 
@@ -24,7 +25,21 @@ export const useTableStore = defineStore('table', {
     async fetchAll() {
       try {
         let res = await $fetch('/api/admin/get');
-        this.users = res.users
+        if (res.users) {
+          let procents = useCashbackStore().getCashback;
+          res.users.forEach(user => {
+            let procent = procents[0].cashback
+            procents.forEach(proc => {
+              if (proc.counter <= user.info[0].lost) {
+                procent = proc.cashback
+              }
+            });
+            user.procent = procent
+          })
+
+          return this.users = res.users
+        }
+
       } catch (e) {
         return useAlertStore().init(e.data.message, true)
       }
