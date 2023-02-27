@@ -2,7 +2,7 @@ import prisma from '../../prisma/client.js'
 import sendClient from '../utils/sendClient.js'
 import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+
 dotenv.config()
 
 export const update = async (req, res) => {
@@ -30,7 +30,6 @@ export const update = async (req, res) => {
         },
 
         data: {
-          role: user.role,
           info: {
             update: {
               where: {
@@ -38,8 +37,7 @@ export const update = async (req, res) => {
               },
               data: {
                 bonuses: parseInt(user.more.bonuses),
-                lost: parseInt(user.more.lost),
-                procent: parseInt(user.more.procent)
+                lost: parseInt(user.more.lost)
               }
             }
           }

@@ -4,6 +4,8 @@ import dotenv from 'dotenv'
 dotenv.config();
 import prisma from '../../prisma/client.js'
 import sendClient from '../utils/sendClient.js';
+import getProcent from '../utils/getProcent.js';
+
 
 export default async (req, res, next) => {
   let { token } = req.cookies;
@@ -13,6 +15,12 @@ export default async (req, res, next) => {
       return sendClient(res, check.code, { user: check.user })
     }
     req.user = check.user
+
+    req.user.procent = await getProcent(req.user.id)
+
+
+
+
     next()
   } catch (e) {
     sendClient(res)

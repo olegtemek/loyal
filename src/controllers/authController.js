@@ -80,7 +80,6 @@ export const registration = async (req, res) => {
           create: {
             where: 1,
             bonuses: 0,
-            procent: 10,
             lost: 0
           }
         },
@@ -151,7 +150,6 @@ export const registrationAdmin = async (req, res) => {
           create: {
             where: data.where,
             bonuses: 5000,
-            procent: 10,
             lost: 0
           }
         }

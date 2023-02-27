@@ -35,7 +35,12 @@ model UserInfo {
   User    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  Int
   where   Int
-  procent Int
   bonuses Int
   lost    Int
+}
+
+model Loyals {
+  id       Int @id @default(autoincrement())
+  cashback Int
+  counter  Int
 }

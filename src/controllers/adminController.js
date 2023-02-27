@@ -1,9 +1,6 @@
 import prisma from '../../prisma/client.js'
 import sendClient from '../utils/sendClient.js'
-import fs from 'fs'
-import * as url from 'url';
-
-import { parse } from 'json2csv';
+import getProcent from '../utils/getProcent.js'
 
 export const index = async (req, res) => {
   try {
@@ -27,23 +24,23 @@ export const transaction = async (req, res) => {
     if (!user) {
       return sendClient(res, 404, { message: 'Пользователь не найден' })
     }
-    function getProcent() {
-      if (user.info[0].lost + parseInt(data.sum - data.minus) <= 100000) {
-        return 10
-      }
-      else if (user.info[0].lost + parseInt(data.sum - data.minus) <= 500000 && user.info[0].lost + parseInt(data.sum - data.minus) > 100000) {
-        return 20
-      }
-      else if (user.info[0].lost + parseInt(data.sum - data.minus) > 500000) {
-        return 30
-      }
-    }
+    // function getProcent() {
+    //   if (user.info[0].lost + parseInt(data.sum - data.minus) <= 100000) {
+    //     return 10
+    //   }
+    //   else if (user.info[0].lost + parseInt(data.sum - data.minus) <= 500000 && user.info[0].lost + parseInt(data.sum - data.minus) > 100000) {
+    //     return 20
+    //   }
+    //   else if (user.info[0].lost + parseInt(data.sum - data.minus) > 500000) {
+    //     return 30
+    //   }
+    // }
+    let procent = await getProcent(user.id)
 
 
 
     let tmpUser = {
-      bonuses: data.minus ? user.info[0].bonuses - parseInt(data.minus) : Math.floor((data.sum * user.info[0].procent) / 100),
-      procent: getProcent(),
+      bonuses: data.minus ? user.info[0].bonuses - parseInt(data.minus) : Math.floor((data.sum * procent) / 100),
       lost: parseInt(data.sum) + user.info[0].lost,
     }
 
@@ -65,7 +62,6 @@ export const transaction = async (req, res) => {
               },
               data: {
                 bonuses: tmpUser.bonuses,
-                procent: tmpUser.procent,
                 lost: tmpUser.lost,
               }
             }
@@ -93,52 +89,39 @@ export const transaction = async (req, res) => {
 }
 
 export const exportUsers = async (req, res) => {
+  res.json('В разработке...')
+}
+
+export const getCashback = async (req, res) => {
   try {
-    const users = await prisma.user.findMany({ where: { NOT: { role: 2 }, status: true }, include: { info: true } })
-
-
-
-
-
+    let cashback = await prisma.loyals.findMany({})
+    return sendClient(res, 200, { message: 'ok', data: cashback })
   } catch (e) {
     sendClient(res)
   }
-
-  // let jsonArray = [];
-  // users.forEach(function (instance, indexx, record) {
-  //   var tempArry = {
-  //     'ColoumnName1': record[indexx].columnNameVlaue,
-  //     'ColoumnName2': record[indexx].columnNameVlaue,
-  //     'ColoumnName3': record[indexx].columnNameVlaue,
-  //     'ColoumnName4': record[indexx].columnNameVlaue
-  //   }
-  //   jsonArray.push(tempArry);
-  // });
-  // //this code is for sorting  xls with required value
-  // jsonArray.sort(function (a, b) {
-  //   return parseFloat(b.ColoumnName4) - parseFloat(a.ColoumnName4);
-  // });
-  // var xls = exporter(jsonArray);
-
-  // fs.writeFileSync(`${url.fileURLToPath(new URL('.', import.meta.url)) + '/excelsender.xlsx'}`, xls, 'binary');
-
-  // res.sendFile('excelsender.xlsx', { root: url.fileURLToPath(new URL('.', import.meta.url)) }, function (err) {
-  //   if (err) {
-  //     console.log(err);
-  //     // next(err);
-  //   } else {
-  //     console.log('Sent:', fileName);
-  //   }
-  // });
-  // fs.unlink('../../excelsender.xlsx', () => { });
 }
 
-export const edit = async (req, res) => {
+export const saveCashback = async (req, res) => {
+  let { data } = req.body
 
-}
+  data.forEach(async (element, index) => {
+    try {
 
-export const update = async (req, res) => {
+      await prisma.loyals.update({
+        where: {
+          id: index + 1,
+        },
+        data: {
+          cashback: element.cashback,
+          counter: element.counter
+        }
+      })
 
+    } catch (e) {
+      sendClient(res)
+    }
+  });
+  return sendClient(res, 200, { message: 'Кешбек система обновлена' })
 }
 
 export const destroy = async (req, res) => {
