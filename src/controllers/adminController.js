@@ -1,10 +1,16 @@
+import excelJs from 'exceljs'
 import prisma from '../../prisma/client.js'
 import sendClient from '../utils/sendClient.js'
 import getProcent from '../utils/getProcent.js'
+import sendTransMail from '../utils/sendTransMail.js'
 
 export const index = async (req, res) => {
   try {
     let users = await prisma.user.findMany({ where: { NOT: { role: 2 }, status: true }, include: { info: true } })
+
+    if (req.user.role == 1) {
+      users = await prisma.user.findMany({ where: { role: 0 }, include: { info: true } })
+    }
 
     sendClient(res, 200, { message: 'ok', users: users })
   } catch (e) {
@@ -24,26 +30,16 @@ export const transaction = async (req, res) => {
     if (!user) {
       return sendClient(res, 404, { message: 'Пользователь не найден' })
     }
-    // function getProcent() {
-    //   if (user.info[0].lost + parseInt(data.sum - data.minus) <= 100000) {
-    //     return 10
-    //   }
-    //   else if (user.info[0].lost + parseInt(data.sum - data.minus) <= 500000 && user.info[0].lost + parseInt(data.sum - data.minus) > 100000) {
-    //     return 20
-    //   }
-    //   else if (user.info[0].lost + parseInt(data.sum - data.minus) > 500000) {
-    //     return 30
-    //   }
-    // }
     let procent = await getProcent(user.id)
 
-
-
     let tmpUser = {
-      bonuses: data.minus ? user.info[0].bonuses - parseInt(data.minus) : Math.floor((data.sum * procent) / 100),
+      bonuses: data.minus ? user.info[0].bonuses - parseInt(data.minus) : Math.floor((data.sum * procent) / 100) + user.info[0].bonuses,
       lost: parseInt(data.sum) + user.info[0].lost,
     }
 
+    if (!data.minus) {
+      sendTransMail(req.user.name, data.sum, user.name)
+    }
 
     try {
 
@@ -124,7 +120,50 @@ export const saveCashback = async (req, res) => {
   return sendClient(res, 200, { message: 'Кешбек система обновлена' })
 }
 
-export const destroy = async (req, res) => {
+export const sender = async (req, res) => {
 
+  let { type } = req.body
+
+  //type 0  = crystal auto
+
+  try {
+
+    let users = await prisma.user.findMany({ where: { role: 0, info: { every: { where: type } } } })
+
+    let numbers = users.map((item) => item.number)
+
+
+    let workbook = new excelJs.Workbook()
+    let sheet = workbook.addWorksheet('numbers')
+
+    sheet.columns = [
+      {
+        header: "Телефоны",
+        key: "number",
+        width: 25,
+      }
+    ]
+
+
+    numbers.forEach(item => {
+      sheet.addRow({
+        number: item
+      })
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment;filename=" + "numbers.xlsx"
+    );
+
+    workbook.xlsx.write(res);
+
+  } catch (e) {
+    sendClient(res)
+  }
 }
 

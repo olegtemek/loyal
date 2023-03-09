@@ -61,6 +61,11 @@ export const registration = async (req, res) => {
     let data = req.body
     let saltPassword = null
 
+
+    if (data.name.length > 30) {
+      return sendClient(res, 500, { message: 'Максимальная длина поле "ФИО", 30 символов' })
+    }
+
     await bcrypt.hash(data.password, parseInt(process.env.SALT)).then(result => {
       saltPassword = result
     }).catch(e => {
@@ -110,6 +115,7 @@ export const registration = async (req, res) => {
 
 
   } catch (e) {
+    console.log(e);
     if (e.code === 'P2002' && e.meta.target == 'User_number_key') {
       sendClient(res, 401, { message: 'Номер телефона уже занят' })
     }
@@ -129,6 +135,14 @@ export const registrationAdmin = async (req, res) => {
 
     if (typeof data.role == 'undefined') {
       data.role = 0
+    }
+
+    if (!data.number || !data.name) {
+      return sendClient(res, 500, { message: 'Ошибка в поле "Телефон" или "Имя"' })
+    }
+
+    if (data.name.length > 30) {
+      return sendClient(res, 500, { message: 'Максимальная длина поле "ФИО", 30 символов' })
     }
 
     await bcrypt.hash(data.password, parseInt(process.env.SALT)).then(result => {

@@ -13,7 +13,7 @@ export default (email, code) => {
   });
 
   const mailOptions = {
-    from: 'Подтверждение почты с сайта',
+    from: process.env.MAIL_EMAIL,
     to: email,
     subject: 'Подтверждение почты с сайта',
     text: `

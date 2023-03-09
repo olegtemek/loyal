@@ -1,8 +1,7 @@
-import dotenv from 'dotenv'
-dotenv.config()
 import nodeMailer from 'nodemailer'
+import sendClient from '../utils/sendClient.js';
 
-export default (email, code) => {
+export default (moderator, sum, name) => {
   const transporter = nodeMailer.createTransport({
     service: process.env.MAIL_SERVICE,
     host: process.env.MAIL_HOST,
@@ -13,13 +12,13 @@ export default (email, code) => {
     },
   });
 
-
-  const text = `<p><h1>Здравствуйте</h1>, для восстановления пароля перейдите по ссылке: <a href="${process.env.APP_URL}reset-code?code=${code}">Тык.</a></p>`
   const mailOptions = {
     from: process.env.MAIL_EMAIL,
-    to: email,
-    subject: 'Подтверждение почты с сайта',
-    html: text
+    to: process.env.MAIL_EMAIL,
+    subject: 'Транзакция на сайте',
+    text: `
+    Модератор ${moderator} добавил сумму ${sum} пользователю ${name}
+    `,
   };
 
   let result = transporter.sendMail(mailOptions, err => {
