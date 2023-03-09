@@ -34,6 +34,11 @@
       "
       :cashback="useCashbackStore().getCashback"
     />
+    <AdminModalSender
+      v-if="
+        useTableStore().getModal.active && useTableStore().getModal.type == 9
+      "
+    />
   </div>
 </template>
 

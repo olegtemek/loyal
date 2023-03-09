@@ -35,6 +35,7 @@
       </div>
       <div class="profile__wrapper-item">
         <UiMyButton :title="'Сохранить'" @onClick="save" />
+        <span><router-link to="/">Назад</router-link></span>
       </div>
     </div>
   </div>
@@ -54,5 +55,6 @@ const user = ref({
 
 const save = () => {
   userUpdate(user.value);
+  useRouter().push({ path: "/" });
 };
 </script>

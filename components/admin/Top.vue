@@ -6,9 +6,11 @@
 
     <div class="admin__top-right">
       <div class="admin__top-right-senders" v-if="getInfoUser().role == 2">
+        <button class="blue" @click="changeSender">Рассылка</button>
         <button class="green" @click="changeProcent">Кешбек</button>
-        <button class="red" @click="addUser">Добавить пользователя</button>
+        <button class="red" @click="addUser">Пользователь</button>
       </div>
+
       <div class="admin__top-right-logout">
         <button @click="logout">
           <nuxt-icon name="admin/logout" filled></nuxt-icon>
@@ -38,6 +40,12 @@ const addUser = () => {
 const changeProcent = () => {
   useTableStore().changeModal({
     type: 8,
+  });
+};
+
+const changeSender = () => {
+  useTableStore().changeModal({
+    type: 9,
   });
 };
 </script>

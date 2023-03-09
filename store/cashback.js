@@ -14,6 +14,7 @@ export const useCashbackStore = defineStore('cashback', {
       try {
         let res = await $fetch('/api/admin/get-cashback');
         this.cashback = res.data
+
       } catch (e) {
         return useAlertStore().init(e.data.message, true)
       }

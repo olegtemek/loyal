@@ -21,9 +21,5 @@ export const useAdminStore = defineStore('admin', {
         useAlertStore().init(e.data.message, true)
       }
     }
-  },
-
-  getters: {
-
   }
 })

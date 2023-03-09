@@ -23,6 +23,7 @@
 
       <div class="auth__item">
         <UiMyButton :title="'Восстановить'" @onClick="resetClick" />
+        <span><router-link to="/">Назад</router-link></span>
       </div>
     </div>
   </div>

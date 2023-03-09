@@ -67,6 +67,11 @@
       top: 20px;
       right: 20px;
       cursor: pointer;
+
+      @media (max-width:414px) {
+        top: 10px;
+        right: 10px;
+      }
     }
 
     >h2 {
@@ -179,7 +184,9 @@
       }
     }
 
-    input {
+    input,
+    textarea {
+      resize: none;
       width: 100%;
       padding: 16px 10px;
       box-sizing: border-box;
@@ -190,6 +197,11 @@
         padding: 8px 10px;
         font-size: 14px;
       }
+    }
+
+
+    textarea {
+      min-height: 150px;
     }
 
   }

@@ -5,7 +5,8 @@
     "dev": "nuxt dev --port=4070",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "start": "NITRO_PORT=4070 node .output/server/index.mjs"
   },
   "devDependencies": {
     "nuxt": "^3.2.0"

@@ -121,6 +121,8 @@ export const useAuthStore = defineStore('auth', {
           }
         })
 
+        console.log(res.code);
+
         return navigateTo('/confirm')
 
       } catch (e) {
@@ -215,7 +217,7 @@ export const useAuthStore = defineStore('auth', {
         }
 
 
-
+        console.log(data);
         let res = await $fetch('/api/registration-admin', {
           method: 'POST',
           body: {
@@ -223,7 +225,8 @@ export const useAuthStore = defineStore('auth', {
             password: data.password,
             name: data.name,
             number: data.number,
-            where: useRoute().query.from ? useRoute().query.from : 1
+            role: data.role,
+            where: data.where
           }
         })
 

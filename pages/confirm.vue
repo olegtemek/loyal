@@ -22,6 +22,9 @@
             @onClick="retry"
           />
         </span>
+        <span
+          ><router-link to="/login" @click="logout">Выход</router-link></span
+        >
       </div>
     </div>
   </div>
@@ -39,5 +42,9 @@ const check = () => {
 
 const retry = () => {
   useAuthStore().sendCode();
+};
+const logout = () => {
+  useCookie("token").value = null;
+  return navigateTo("/login");
 };
 </script>

@@ -32,10 +32,32 @@
           бонусы
         </p>
 
-        <a href="#" class="btn green"
+        <a
+          href="https://wa.me/+77052228880?text=Здравствуйте"
+          class="btn green"
+          target="_blank"
+          v-if="getInfoUser().info[0].where"
           ><nuxt-icon name="general/zapis" filled></nuxt-icon>Записаться</a
         >
-        <a href="#" class="btn"
+        <a
+          href="https://wa.me/+77052228889?text=Здравствуйте"
+          class="btn green"
+          target="_blank"
+          v-else
+          ><nuxt-icon name="general/zapis" filled></nuxt-icon>Записаться</a
+        >
+        <a
+          href="https://2gis.kz/almaty/geo/70000001025644603"
+          target="_blank"
+          class="btn"
+          v-if="getInfoUser().info[0].where"
+          ><nuxt-icon name="general/maps" filled></nuxt-icon>Найти нас</a
+        >
+        <a
+          href="https://2gis.kz/almaty/geo/70000001031758568"
+          target="_blank"
+          class="btn"
+          v-else
           ><nuxt-icon name="general/maps" filled></nuxt-icon>Найти нас</a
         >
       </div>
@@ -44,19 +66,44 @@
         <p v-if="getInfoUser().info[0].where">
           Наш кешбек так же распространяется на магазин с автозапчастями
         </p>
-        <p v-else>
-          Наш кешбек так же распространяется на стоматологию CrystalDent
-        </p>
+        <p v-else>Наш кешбек так же распространяется на стоматологию</p>
 
-        <a href="#" class="btn"
+        <a
+          href="https://kristall-auto.kz"
+          class="btn"
+          v-if="getInfoUser().info[0].where"
           ><nuxt-icon name="general/gears" filled></nuxt-icon>Автозапчасти</a
+        >
+        <a href="https://kristall-dent.kz" class="btn" v-else
+          ><nuxt-icon name="general/gears" filled></nuxt-icon>Стоматология</a
         >
       </div>
 
-      <div class="profile__wrapper-social">
-        <a href="#"><nuxt-icon name="general/instagram"></nuxt-icon></a>
-        <a href="#"><nuxt-icon name="general/whatsapp"></nuxt-icon></a>
-        <a href="#"><nuxt-icon name="general/telegram"></nuxt-icon></a>
+      <div class="profile__wrapper-social" v-if="getInfoUser().info[0].where">
+        <a
+          href="https://instagram.com/kristalldentalmaty?igshid=YmMyMTA2M2Y="
+          target="_blank"
+          ><nuxt-icon name="general/instagram"></nuxt-icon
+        ></a>
+        <a href="https://wa.me/+77052228880?text=Здравствуйте" target="_blank"
+          ><nuxt-icon name="general/whatsapp"></nuxt-icon
+        ></a>
+        <a href="https://t.me/+77052228880" target="_blank"
+          ><nuxt-icon name="general/telegram"></nuxt-icon
+        ></a>
+      </div>
+      <div class="profile__wrapper-social" v-else>
+        <a
+          href="https://instagram.com/kristallautoalmaty?igshid=YmMyMTA2M2Y="
+          target="_blank"
+          ><nuxt-icon name="general/instagram"></nuxt-icon
+        ></a>
+        <a href="https://wa.me/+77052228889?text=Здравствуйте" target="_blank"
+          ><nuxt-icon name="general/whatsapp"></nuxt-icon
+        ></a>
+        <a href="https://t.me/kristall_auto" target="_blank"
+          ><nuxt-icon name="general/telegram"></nuxt-icon
+        ></a>
       </div>
     </div>
   </div>
@@ -69,4 +116,8 @@ const { hello, getInfoUser } = useUser();
 
 import { useCashbackStore } from "@/store/cashback.js";
 await useCashbackStore().fetchCashback();
+
+if (getInfoUser().role == 1) {
+  useRouter().push({ path: "/admin" });
+}
 </script>

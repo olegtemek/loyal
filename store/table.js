@@ -15,10 +15,12 @@ export const useTableStore = defineStore('table', {
       filters: {
         name: null,
         number: null,
-        where: 1
+        where: null
       }
     }
   },
+
+
 
 
   actions: {
@@ -80,7 +82,9 @@ export const useTableStore = defineStore('table', {
       if (state.filters.name) {
         filterUsers = filterUsers.filter((item) => item.name.toLowerCase().indexOf(state.filters.name.toLowerCase()) > -1)
       }
-      filterUsers = filterUsers.filter((item) => item.info[0].where == state.filters.where)
+      if (state.filters.where != null) {
+        filterUsers = filterUsers.filter((item) => item.info[0].where == state.filters.where)
+      }
 
       if (state.filters.number) {
         filterUsers = filterUsers.filter((item) => item.number.indexOf(state.filters.number) > -1)

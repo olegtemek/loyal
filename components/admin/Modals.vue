@@ -89,7 +89,7 @@ const props = defineProps({
 const tmpUser = ref({
   id: props.user.id,
   name: props.user.name,
-  procent: props.user.info[0].procent,
+  procent: 30,
   bonuses: props.user.info[0].bonuses,
   minus: null,
   sum: null,

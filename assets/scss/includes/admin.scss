@@ -105,6 +105,11 @@
             padding: 6px 10px;
           }
 
+          @media (max-width:414px) {
+            padding: 4px;
+            margin-right: 5px;
+          }
+
 
           &.green {
             background-color: $green;
@@ -125,6 +130,12 @@
           margin-left: 20px;
         }
 
+        @media (max-width:414px) {
+          margin-left: 10px;
+        }
+
+
+
         button {
           display: flex;
           align-items: center;
@@ -136,6 +147,11 @@
           @media (max-width:1280px) {
             font-size: 16px;
           }
+
+          @media (max-width:414px) {
+            font-size: 0;
+          }
+
 
           .nuxt-icon {
             width: 20px;
